@@ -1,0 +1,17 @@
+Welcome to Simon Says! This file will contain the instructions on how to play.
+
+There are two phases in this game, the flashing phase and the guessing phase.
+
+During the flashing phase, a sequence of flashing lights will be presented.
+It is the job of the user to memorize this sequence.
+Once this sequence is over, the game will move on to the guessing phase.
+
+During the guessing phase, the user will repeat the sequence of colors
+they were just presented. 
+Incorrectly inputting a color will end the game.
+Once the user has done so correctly, another light will be added to the end of the 
+sequence, which will be shown during the flashing phase.
+
+The game will only end when the user has guessed incorrectly.
+
+Have fun!

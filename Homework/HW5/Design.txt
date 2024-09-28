@@ -1,0 +1,90 @@
+For the following document, the "generation phase" refers to the portion of the
+game where a sequence of lights is generated and presented.
+The "guessing phase" refers to the portion where the user has to repeat the 
+correct sequence of lights.
+
+In this game, we chose to utilize one subclass of World rather than two.
+This was done so because the generation phase mainly takes place in the 
+onTick() method while the guessing phase mainly takes place in the onMouseClicked()
+method. We felt as if two different classes was unnecessary.
+
+Breaking down the design:
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+SimonWorld
+Fields:
+  boolean generationMode;
+This field is used to indicate whether or not the game is in the generation phase
+or the guessing phase. This value will be the main driver that allows the game
+to function with only one subclass of world
+
+  Random rand;
+This field represents the random number that will generate the sequence of flashing
+lights
+
+  int colorFlashed;
+This field represents what color, if any, is lit in the GUI (with the default
+being that no color is lit)
+-1 = all colors are dim
+0 = red is lit
+1 = green is lit
+2 = yellow is lit
+3 = blue is lit
+
+  ILoButton correctList;
+This field represents the ongoing correct sequence of lights
+
+  int counter;
+This field is a counter that is used in different ways throughout the program.
+Namely, the counter is used to keep track of which button the user's guess 
+corresponds to and what flashing color should be shown during the generation phase
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+WorldScene makeScene()
+This method is fairly simple. Its purpose is to show the current state of the game
+Based on the value of colorFlashed, (which is dealt with in other classes),
+this method will the return the WorldScene with the appropriately light button
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+World onTick()
+This method deals with updating the game during the generation phase and
+generating a new Button when the user has guessed a sequence correctly.
+Here is, in essence, how this method works
+
+- If the game is not in generation mode, it will simply return a scene where all 
+lights are off
+- If there is a light currently flashed on, it must be flashed off, and 
+nothing else will happen that tick
+- Using the counter, this method will flash each light in the sequence
+- Once each light in the sequence has flashed, this method will generate an 
+additional button and add it to the end of the sequence
+- This method will end the generation phase once a new Button has been generated
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+World lastScene(String msg)
+Once again, this method is fairly simple.
+All it does is show the "game over" screen, and will presented later on in the game
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+SimonWorld onMouseClicked(Posn pos)
+This method deals with taking in the guesses of the user and checking if they are
+correct
+
+- First, if the game is in the generation phase, all input will be ignored
+- Based on which quandrant the user's mouse clicks, this method will check
+if that input is correct. If it is correct, this method will await the next input
+up until each light in the sequence is guessed correctly
+- if any guess is incorrect, the game will end
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+Extra methods:
+There are some additional helper methods in this program that 
+are fairly straighforward
+
+In ILoButton:
+ILoButton addToEnd(Button end) will add a button to the end of a ILoButton
+
+Button get(int num) will return a button at a given index (0-based) or throw an
+error if an invalid index is given
+
+In Button: 
+int getNumber() returns the number corresponding to this button's color 
+0 = red
+1 = green
+2 = yellow
+3 = blue
